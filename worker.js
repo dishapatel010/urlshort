@@ -256,28 +256,12 @@ async function renderVerificationHTML(shortCode, env) {
   <body>
     <div class="container">
       <h2>Verify You're Human</h2>
-      <form id="verification-form">
+      <form action="/v/${shortCode}" method="POST">
         <div class="cf-turnstile" data-sitekey="${env.TURNSTILE_SITE_KEY}"></div>
         <button type="submit">Continue to Original URL</button>
       </form>
     </div>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-    <script>
-      document.getElementById("verification-form").addEventListener("submit", async function(event) {
-        event.preventDefault();
-        const formData = new FormData(this);
-        const response = await fetch("/v/${shortCode}", {
-          method: "POST",
-          body: formData,
-        });
-        
-        if (response.redirected) {
-          window.location.href = response.url;
-        } else {
-          alert("Verification failed, please try again.");
-        }
-      });
-    </script>
   </body>
   </html>`;
 }
